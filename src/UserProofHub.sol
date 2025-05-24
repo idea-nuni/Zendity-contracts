@@ -22,7 +22,8 @@ contract UserProofHub {
         bytes32 indexed messageID,
         address indexed destinationAddress,
         bytes32 indexed destinationBlockchainID,
-        string message
+        address account,
+        bytes32 proofHash
     );
 
     /**
@@ -59,13 +60,22 @@ contract UserProofHub {
     }
 
     /**
-     * @dev Sends a message to another chain.
+     * @dev Sends user account and proof hash to another chain.
+     * @param destinationAddress The destination contract address on the target chain
+     * @param destinationBlockchainID The target blockchain ID
+     * @param account The user account address to send
      */
     function transportProof(
         address destinationAddress,
         bytes32 destinationBlockchainID,
-        string calldata message
+        address account
     ) external returns (bytes32) {
+        require(account != address(0), "Invalid account address");
+
+        // Get the proof hash for the account
+        bytes32 proofHash = userProofHashes[account];
+        require(proofHash != bytes32(0), "Account not verified");
+
         bytes32 messageID = messenger.sendCrossChainMessage(
             TeleporterMessageInput({
                 // BlockchainID of Dispatch L1
@@ -77,7 +87,7 @@ contract UserProofHub {
                 }),
                 requiredGasLimit: 100000,
                 allowedRelayerAddresses: new address[](0),
-                message: abi.encode(message)
+                message: abi.encode(account, proofHash)
             })
         );
 
@@ -85,7 +95,8 @@ contract UserProofHub {
             messageID,
             destinationAddress,
             destinationBlockchainID,
-            message
+            account,
+            proofHash
         );
         return messageID;
     }
