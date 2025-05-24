@@ -10,3 +10,8 @@ remappings = [
   "@utilities/=lib/icm-contracts/contracts/utilities/"
 ]
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+
+[rpc_endpoints]
+fuji-c = "https://avalanche-fuji.drpc.org"
+echo = "https://subnets.avax.network/echo/testnet/rpc"
