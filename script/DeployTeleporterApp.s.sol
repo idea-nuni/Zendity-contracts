@@ -2,8 +2,8 @@
 pragma solidity ^0.8.25;
 
 import {Script, console} from "forge-std/Script.sol";
-import {MessageSender} from "../src/MessageSender.sol";
-import {MessageReceiver} from "../src/MessageReceiver.sol";
+import {UserProofHub} from "../src/UserProofHub.sol";
+import {UserProofReceiver} from "../src/UserProofReceiver.sol";
 
 /**
  * @title DeployTeleporterApp
@@ -16,7 +16,7 @@ contract DeployTeleporterApp is Script {
     function deploySenderOnly() public {
         vm.startBroadcast();
 
-        MessageSender sender = new MessageSender();
+        UserProofHub sender = new UserProofHub();
         console.log("MessageSender deployed at:", address(sender));
 
         vm.stopBroadcast();
