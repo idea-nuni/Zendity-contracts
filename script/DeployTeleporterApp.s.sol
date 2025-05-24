@@ -7,29 +7,29 @@ import {UserProofReceiver} from "../src/UserProofReceiver.sol";
 
 /**
  * @title DeployTeleporterApp
- * @dev Script to deploy MessageSender and MessageReceiver contracts
+ * @dev Script to deploy UserProofHub and UserProofReceiver contracts
  */
 contract DeployTeleporterApp is Script {
     /**
-     * @dev Deploy only MessageSender (for source chain)
+     * @dev Deploy only UserProofHub (for source chain)
      */
     function deploySenderOnly() public {
         vm.startBroadcast();
 
         UserProofHub sender = new UserProofHub();
-        console.log("MessageSender deployed at:", address(sender));
+        console.log("UserProofHub deployed at:", address(sender));
 
         vm.stopBroadcast();
     }
 
     /**
-     * @dev Deploy only MessageReceiver (for destination chain)
+     * @dev Deploy only UserProofReceiver (for destination chain)
      */
     function deployReceiverOnly() public {
         vm.startBroadcast();
 
-        MessageReceiver receiver = new MessageReceiver();
-        console.log("MessageReceiver deployed at:", address(receiver));
+        UserProofReceiver receiver = new UserProofReceiver();
+        console.log("UserProofReceiver deployed at:", address(receiver));
 
         vm.stopBroadcast();
     }
