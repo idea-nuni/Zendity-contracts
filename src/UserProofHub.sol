@@ -63,13 +63,12 @@ contract UserProofHub {
      * @dev Sends user account and proof hash to another chain.
      * @param destinationAddress The destination contract address on the target chain
      * @param destinationBlockchainID The target blockchain ID
-     * @param account The user account address to send
      */
     function transportProof(
         address destinationAddress,
-        bytes32 destinationBlockchainID,
-        address account
+        bytes32 destinationBlockchainID
     ) external returns (bytes32) {
+        address account = msg.sender;
         require(account != address(0), "Invalid account address");
 
         // Get the proof hash for the account
