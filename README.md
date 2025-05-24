@@ -99,15 +99,15 @@ TeleporterRegistry addresses vary by chain:
 ### Installation
 
 1. Clone this repository:
-   ```bash
+```bash
    git clone https://github.com/yourusername/zendity-teleporter.git
-   cd zendity-teleporter
-   ```
+cd zendity-teleporter
+```
 
 2. Install dependencies:
-   ```bash
+```bash
    forge install
-   ```
+```
 
 ### Deployment
 
