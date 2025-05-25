@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.25;
+pragma solidity 0.8.24;
 
 import "@chainlink/contracts-ccip/contracts/libraries/Client.sol";
 import "@chainlink/contracts-ccip/contracts/interfaces/IRouterClient.sol";
@@ -38,6 +38,59 @@ contract CCIPSender {
 
         IERC20(_token).transfer(_beneficiary, amount);
     }
+
+    /// @notice Sends data to receiver on the destination chain.
+    /// @notice Pay for fees in native gas.
+    /// @dev Assumes your contract has sufficient native gas tokens.
+    /// @param _destinationChainSelector The identifier (aka selector) for the destination blockchain.
+    /// @param _receiver The address of the recipient on the destination blockchain.
+    /// @param _text The text to be sent.
+    /// @return messageId The ID of the CCIP message that was sent.
+    function sendMessagePayNative(
+        uint64 _destinationChainSelector,
+        address _receiver,
+        string calldata _text
+    ) external returns (bytes32 messageId) {
+        // Create an EVM2AnyMessage struct in memory with necessary information for sending a cross-chain message
+        Client.EVM2AnyMessage memory evm2AnyMessage = _buildCCIPMessage(
+            _receiver,
+            _text,
+            address(0)
+        );
+
+        // Initialize a router client instance to interact with cross-chain router
+        // IRouterClient router = IRouterClient(this.getRouter());
+
+        // Get the fee required to send the CCIP message
+        uint256 fees = ccipRouter.getFee(
+            _destinationChainSelector,
+            evm2AnyMessage
+        );
+
+        // if (fees > address(this).balance)
+        //     revert NotEnoughBalance(address(this).balance, fees);
+
+        // Send the CCIP message through the router and store the returned CCIP message ID
+        messageId = ccipRouter.ccipSend{value: fees}(
+            _destinationChainSelector,
+            evm2AnyMessage
+        );
+
+        // Emit an event with message details
+        emit MessageSent(
+            messageId,
+            _destinationChainSelector,
+            _receiver,
+            _text,
+            address(0),
+            fees
+        );
+
+        // Return the CCIP message ID
+        return messageId;
+    }
+
+    receive() external payable {}
 
     function sendSignature(
         address _receiver,
