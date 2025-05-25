@@ -2,3 +2,5 @@
 @teleporter/=lib/icm-contracts/contracts/teleporter/
 @utilities/=lib/icm-contracts/contracts/utilities/ 
 @teleporter/=/lib/icm-contracts/contracts/teleporter/
+@openzeppelin/=lib/openzeppelin-contracts/
+@chainlink/contracts-ccip/=lib/chainlink-ccip/contracts/

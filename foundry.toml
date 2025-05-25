@@ -16,3 +16,5 @@ remappings = [
 fuji-c = "https://avalanche-fuji.drpc.org"
 echo = "https://subnets.avax.network/echo/testnet/rpc"
 dispatch = "https://subnets.avax.network/dispatch/testnet/rpc"
+
+ 
